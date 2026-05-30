@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="jp.co.iko.layoutconverter.audit.ExecutionControlMapper">
+    <resultMap id="ExecutionControlRecordMap" type="jp.co.iko.layoutconverter.audit.ExecutionControlRecord">
+        <constructor>
+            <arg column="RUN_ID" javaType="java.lang.String"/>
+            <arg column="TASK_ID" javaType="java.lang.String"/>
+            <arg column="STATUS" javaType="jp.co.iko.layoutconverter.audit.ExecutionStatus"/>
+            <arg column="START_AT" javaType="java.time.LocalDateTime"/>
+            <arg column="END_AT" javaType="java.time.LocalDateTime"/>
+        </constructor>
+    </resultMap>
+
+    <select id="findLatest" resultMap="ExecutionControlRecordMap">
+        SELECT
+            RUN_ID,
+            TASK_ID,
+            STATUS,
+            START_AT,
+            END_AT
+        FROM (
+            SELECT
+                RUN_ID,
+                TASK_ID,
+                STATUS,
+                START_AT,
+                END_AT
+            FROM ${executionControlTable}
+            WHERE TASK_ID = #{taskId}
+            ORDER BY START_AT DESC, RUN_ID DESC
+        )
+        WHERE ROWNUM = 1
+    </select>
+
+    <insert id="insertRunning">
+        INSERT INTO ${executionControlTable} (
+            RUN_ID,
+            TASK_ID,
+            STATUS,
+            START_AT,
+            END_AT
+        ) VALUES (
+            #{runId},
+            #{taskId},
+            'RUNNING',
+            SYSTIMESTAMP,
+            NULL
+        )
+    </insert>
+
+    <update id="updateStatus">
+        UPDATE ${executionControlTable}
+        SET
+            STATUS = #{status},
+            END_AT = SYSTIMESTAMP
+        WHERE RUN_ID = #{runId}
+          AND TASK_ID = #{taskId}
+    </update>
+</mapper>

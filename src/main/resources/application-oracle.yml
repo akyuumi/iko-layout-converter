@@ -1,0 +1,20 @@
+spring:
+  datasource:
+    url: ${IKO_DB_URL}
+    username: ${IKO_DB_USER}
+    password: ${IKO_DB_PASSWORD}
+    driver-class-name: oracle.jdbc.OracleDriver
+    hikari:
+      pool-name: iko-layout-converter-oracle
+      maximum-pool-size: ${IKO_DB_POOL_SIZE:4}
+      minimum-idle: ${IKO_DB_MIN_IDLE:0}
+      connection-timeout: ${IKO_DB_CONNECTION_TIMEOUT_MS:30000}
+      validation-timeout: ${IKO_DB_VALIDATION_TIMEOUT_MS:5000}
+      max-lifetime: ${IKO_DB_MAX_LIFETIME_MS:1800000}
+
+migration:
+  current-schema: ${IKO_CURRENT_SCHEMA}
+  next-schema: ${IKO_NEXT_SCHEMA}
+  commit-size: ${IKO_COMMIT_SIZE:10000}
+  tasks: ${IKO_TASKS:}
+

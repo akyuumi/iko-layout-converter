@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: iko-layout-converter
+  main:
+    web-application-type: none
+
+mybatis:
+  mapper-locations: classpath*:mapper/**/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+
+migration:
+  current-schema: ${IKO_CURRENT_SCHEMA:CURRENT_SCHEMA}
+  next-schema: ${IKO_NEXT_SCHEMA:NEXT_SCHEMA}
+  commit-size: ${IKO_COMMIT_SIZE:10000}
+  tasks: ${IKO_TASKS:}

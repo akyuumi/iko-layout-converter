@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="jp.co.iko.layoutconverter.task.sample.SampleCustomerMapper">
+    <select id="countSource" resultType="long">
+        SELECT COUNT(*)
+        FROM ${sourceTable001}
+    </select>
+
+    <update id="mergeCustomers">
+        MERGE INTO ${targetTable} T
+        USING (
+            SELECT
+                S1.SOURCE_KEY AS CUSTOMER_ID,
+                TRIM(S1.CUSTOMER_NAME) AS CUSTOMER_NAME,
+                S1.BIRTH_YY || LPAD(S1.BIRTH_MM, 2, '0') || LPAD(S1.BIRTH_DD, 2, '0') AS BIRTHDAY,
+                NVL(S2.AMOUNT, 0) AS AMOUNT
+            FROM ${sourceTable001} S1
+            LEFT JOIN ${sourceTable002} S2
+                ON S2.SOURCE_KEY = S1.SOURCE_KEY
+        ) S
+        ON (T.CUSTOMER_ID = S.CUSTOMER_ID)
+        WHEN MATCHED THEN UPDATE SET
+            T.CUSTOMER_NAME = S.CUSTOMER_NAME,
+            T.BIRTHDAY = S.BIRTHDAY,
+            T.AMOUNT = S.AMOUNT,
+            T.UPDATED_AT = SYSTIMESTAMP
+        WHEN NOT MATCHED THEN INSERT (
+            CUSTOMER_ID,
+            CUSTOMER_NAME,
+            BIRTHDAY,
+            AMOUNT,
+            CREATED_AT,
+            UPDATED_AT
+        ) VALUES (
+            S.CUSTOMER_ID,
+            S.CUSTOMER_NAME,
+            S.BIRTHDAY,
+            S.AMOUNT,
+            SYSTIMESTAMP,
+            SYSTIMESTAMP
+        )
+    </update>
+</mapper>
+
