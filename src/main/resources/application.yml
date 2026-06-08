@@ -10,7 +10,7 @@ mybatis:
     map-underscore-to-camel-case: true
 
 migration:
-  current-schema: ${IKO_CURRENT_SCHEMA:CURRENT_SCHEMA}
-  next-schema: ${IKO_NEXT_SCHEMA:NEXT_SCHEMA}
+  source-schema: ${IKO_SOURCE_SCHEMA:SOURCE_SCHEMA}
+  target-schema: ${IKO_TARGET_SCHEMA:TARGET_SCHEMA}
   commit-size: ${IKO_COMMIT_SIZE:10000}
   tasks: ${IKO_TASKS:}

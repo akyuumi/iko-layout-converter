@@ -7,7 +7,7 @@
 - プロジェクト管理用の `TASKS.md`、`DECISIONS.md`、`CHANGELOG.md` を追加。
 - Java 21 / Gradle / Spring Boot / MyBatis の最小プロジェクト構成を追加。
 - `MigrationRunner`、`MigrationTask`、Task レジストリ、実行コンテキスト、実行結果モデルを追加。
-- `application.yml` に現行スキーマ、次期スキーマ、コミット件数、実行 Task の設定を追加。
+- `application.yml` に移行元スキーマ、移行先スキーマ、コミット件数、実行 Task の設定を追加。
 - Mapper XML 外出し用の `src/main/resources/mapper` 配置を追加。
 - `.gitignore` を追加。
 - `EXECUTION_CONTROL` を使った Task 単位の実行制御を追加。

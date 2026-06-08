@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 /**
  * サンプル顧客テーブルを移行する参照実装 Task。
  *
- * <p>分割された現行テーブルを LEFT JOIN し、次期テーブルへ MERGE する実装例を示す。</p>
+ * <p>分割された移行元テーブルを LEFT JOIN し、移行先テーブルへ MERGE する実装例を示す。</p>
  */
 @Component
 public class SampleCustomerMigrationTask implements MigrationTask {
@@ -55,9 +55,9 @@ public class SampleCustomerMigrationTask implements MigrationTask {
     @Override
     @Transactional
     public MigrationTaskResult execute(MigrationTaskContext context) {
-        String sourceTable001 = SchemaNames.qualify(context.currentSchema(), SOURCE_TABLE_001);
-        String sourceTable002 = SchemaNames.qualify(context.currentSchema(), SOURCE_TABLE_002);
-        String targetTable = SchemaNames.qualify(context.nextSchema(), TARGET_TABLE);
+        String sourceTable001 = SchemaNames.qualify(context.sourceSchema(), SOURCE_TABLE_001);
+        String sourceTable002 = SchemaNames.qualify(context.sourceSchema(), SOURCE_TABLE_002);
+        String targetTable = SchemaNames.qualify(context.targetSchema(), TARGET_TABLE);
 
         long readCount = mapper.countSource(sourceTable001);
         int convertedCount = mapper.mergeCustomers(sourceTable001, sourceTable002, targetTable);

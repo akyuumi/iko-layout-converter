@@ -10,19 +10,19 @@ import org.apache.ibatis.annotations.Param;
 public interface SampleCustomerMapper {
 
     /**
-     * 現行側サンプル顧客テーブルの件数を取得する。
+     * 移行元サンプル顧客テーブルの件数を取得する。
      *
-     * @param sourceTable001 スキーマ修飾済みの現行テーブル名
+     * @param sourceTable001 スキーマ修飾済みの移行元テーブル名
      * @return 読込対象件数
      */
     long countSource(@Param("sourceTable001") String sourceTable001);
 
     /**
-     * 現行側サンプル顧客テーブルを LEFT JOIN し、次期側サンプル顧客テーブルへ MERGE する。
+     * 移行元サンプル顧客テーブルを LEFT JOIN し、移行先サンプル顧客テーブルへ MERGE する。
      *
-     * @param sourceTable001 スキーマ修飾済みの現行テーブル名 1
-     * @param sourceTable002 スキーマ修飾済みの現行テーブル名 2
-     * @param targetTable スキーマ修飾済みの次期テーブル名
+     * @param sourceTable001 スキーマ修飾済みの移行元テーブル名 1
+     * @param sourceTable002 スキーマ修飾済みの移行元テーブル名 2
+     * @param targetTable スキーマ修飾済みの移行先テーブル名
      * @return MERGE 件数
      */
     int mergeCustomers(

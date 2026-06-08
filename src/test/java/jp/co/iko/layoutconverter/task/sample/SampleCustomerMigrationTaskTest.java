@@ -25,15 +25,15 @@ class SampleCustomerMigrationTaskTest {
     void executeCountsSourceAndMergesTarget() {
         MigrationTaskContext context = new MigrationTaskContext(
                 "RUN001",
-                "CURRENT_SCHEMA",
-                "NEXT_SCHEMA",
+                "SOURCE_SCHEMA",
+                "TARGET_SCHEMA",
                 10000
         );
-        when(mapper.countSource("CURRENT_SCHEMA.SAMPLE_CUSTOMER_001")).thenReturn(10L);
+        when(mapper.countSource("SOURCE_SCHEMA.SAMPLE_CUSTOMER_001")).thenReturn(10L);
         when(mapper.mergeCustomers(
-                "CURRENT_SCHEMA.SAMPLE_CUSTOMER_001",
-                "CURRENT_SCHEMA.SAMPLE_CUSTOMER_002",
-                "NEXT_SCHEMA.SAMPLE_CUSTOMER"
+                "SOURCE_SCHEMA.SAMPLE_CUSTOMER_001",
+                "SOURCE_SCHEMA.SAMPLE_CUSTOMER_002",
+                "TARGET_SCHEMA.SAMPLE_CUSTOMER"
         )).thenReturn(8);
 
         MigrationTaskResult result = task.execute(context);
@@ -42,12 +42,11 @@ class SampleCustomerMigrationTaskTest {
         assertEquals(10L, result.readCount());
         assertEquals(8L, result.convertedCount());
         assertEquals(0L, result.errorCount());
-        verify(mapper).countSource("CURRENT_SCHEMA.SAMPLE_CUSTOMER_001");
+        verify(mapper).countSource("SOURCE_SCHEMA.SAMPLE_CUSTOMER_001");
         verify(mapper).mergeCustomers(
-                "CURRENT_SCHEMA.SAMPLE_CUSTOMER_001",
-                "CURRENT_SCHEMA.SAMPLE_CUSTOMER_002",
-                "NEXT_SCHEMA.SAMPLE_CUSTOMER"
+                "SOURCE_SCHEMA.SAMPLE_CUSTOMER_001",
+                "SOURCE_SCHEMA.SAMPLE_CUSTOMER_002",
+                "TARGET_SCHEMA.SAMPLE_CUSTOMER"
         );
     }
 }
-

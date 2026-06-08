@@ -13,8 +13,7 @@ spring:
       max-lifetime: ${IKO_DB_MAX_LIFETIME_MS:1800000}
 
 migration:
-  current-schema: ${IKO_CURRENT_SCHEMA}
-  next-schema: ${IKO_NEXT_SCHEMA}
+  source-schema: ${IKO_SOURCE_SCHEMA}
+  target-schema: ${IKO_TARGET_SCHEMA}
   commit-size: ${IKO_COMMIT_SIZE:10000}
   tasks: ${IKO_TASKS:}
-

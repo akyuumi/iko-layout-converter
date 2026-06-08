@@ -26,7 +26,7 @@
 
 決定事項:
 
-- 1次期テーブル=1Task の方針に合わせ、各変換処理は `MigrationTask` 実装として登録する。
+- 移行先テーブル1つにつき1Task の方針に合わせ、各変換処理は `MigrationTask` 実装として登録する。
 - `taskId` をキーに `MigrationRunner` が対象 Task を選択する。
 
 理由:
@@ -63,7 +63,7 @@
 
 制約:
 
-- `EXECUTION_CONTROL` は次期スキーマ側に配置する前提とする。
+- `EXECUTION_CONTROL` は移行先スキーマ側に配置する前提とする。
 - 詳細な再実行範囲制御は今後の Task 実装時に必要に応じて追加する。
 
 ## 2026-05-26: サンプル変換 Task は参照実装として `SAMPLE_CUSTOMER` を用意
@@ -71,11 +71,11 @@
 決定事項:
 
 - 実業務のマッピング定義書が未配置のため、参照実装として `SAMPLE_CUSTOMER` Task を追加する。
-- 現行側の分割テーブル `SAMPLE_CUSTOMER_001` / `SAMPLE_CUSTOMER_002` を LEFT JOIN し、次期側 `SAMPLE_CUSTOMER` へ MERGE する。
+- 移行元側の分割テーブル `SAMPLE_CUSTOMER_001` / `SAMPLE_CUSTOMER_002` を LEFT JOIN し、移行先側 `SAMPLE_CUSTOMER` へ MERGE する。
 
 理由:
 
-- 1次期テーブル=1Task、SQL外出し、件数ログ出力の実装パターンをリポジトリ上で確認できるようにするため。
+- 移行先テーブル1つにつき1Task、SQL外出し、件数ログ出力の実装パターンをリポジトリ上で確認できるようにするため。
 - 今後の実マッピング Task 追加時の雛形として使えるため。
 
 影響:
@@ -130,7 +130,7 @@
 影響:
 
 - 実行時は `--spring.profiles.active=local` または `--spring.profiles.active=oracle` を指定する。
-- `oracle` profile では `IKO_DB_URL`、`IKO_DB_USER`、`IKO_DB_PASSWORD`、`IKO_CURRENT_SCHEMA`、`IKO_NEXT_SCHEMA` が必須になる。
+- `oracle` profile では `IKO_DB_URL`、`IKO_DB_USER`、`IKO_DB_PASSWORD`、`IKO_SOURCE_SCHEMA`、`IKO_TARGET_SCHEMA` が必須になる。
 
 制約:
 

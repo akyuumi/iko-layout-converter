@@ -17,7 +17,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 @ExtendWith(MockitoExtension.class)
 class ExecutionControlServiceTest {
 
-    private static final String TABLE = "NEXT_SCHEMA.EXECUTION_CONTROL";
+    private static final String TABLE = "TARGET_SCHEMA.EXECUTION_CONTROL";
 
     @Mock
     private ExecutionControlMapper mapper;
@@ -27,7 +27,7 @@ class ExecutionControlServiceTest {
     @BeforeEach
     void setUp() {
         MigrationProperties properties = new MigrationProperties();
-        properties.setNextSchema("NEXT_SCHEMA");
+        properties.setTargetSchema("TARGET_SCHEMA");
         service = new ExecutionControlService(mapper, properties);
     }
 

@@ -66,8 +66,8 @@ public class MigrationRunner implements CommandLineRunner {
         String runId = UUID.randomUUID().toString();
         MigrationTaskContext context = new MigrationTaskContext(
                 runId,
-                properties.getCurrentSchema(),
-                properties.getNextSchema(),
+                properties.getSourceSchema(),
+                properties.getTargetSchema(),
                 properties.getCommitSize()
         );
 

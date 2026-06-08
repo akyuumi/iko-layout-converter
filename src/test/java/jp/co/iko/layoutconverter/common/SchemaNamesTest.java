@@ -9,13 +9,12 @@ class SchemaNamesTest {
 
     @Test
     void qualifyValidatesAndBuildsQualifiedName() {
-        assertEquals("NEXT_SCHEMA.SAMPLE_CUSTOMER", SchemaNames.qualify("NEXT_SCHEMA", "SAMPLE_CUSTOMER"));
+        assertEquals("TARGET_SCHEMA.SAMPLE_CUSTOMER", SchemaNames.qualify("TARGET_SCHEMA", "SAMPLE_CUSTOMER"));
         assertEquals("SAMPLE_CUSTOMER", SchemaNames.qualify(null, "SAMPLE_CUSTOMER"));
     }
 
     @Test
     void qualifyRejectsUnsafeIdentifier() {
-        assertThrows(IllegalArgumentException.class, () -> SchemaNames.qualify("NEXT_SCHEMA", "SAMPLE;DROP"));
+        assertThrows(IllegalArgumentException.class, () -> SchemaNames.qualify("TARGET_SCHEMA", "SAMPLE;DROP"));
     }
 }
-

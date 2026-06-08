@@ -7,13 +7,13 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 /**
  * {@code migration.*} 配下の設定値。
  *
- * <p>現行・次期スキーマ名、コミット件数、実行対象 Task ID を保持する。</p>
+ * <p>移行元・移行先スキーマ名、コミット件数、実行対象 Task ID を保持する。</p>
  */
 @ConfigurationProperties(prefix = "migration")
 public class MigrationProperties {
 
-    private String currentSchema;
-    private String nextSchema;
+    private String sourceSchema;
+    private String targetSchema;
     private int commitSize = 10000;
     private List<String> tasks = new ArrayList<>();
 
@@ -24,39 +24,39 @@ public class MigrationProperties {
     }
 
     /**
-     * 現行スキーマ名を取得する。
+     * 移行元スキーマ名を取得する。
      *
-     * @return 現行スキーマ名
+     * @return 移行元スキーマ名
      */
-    public String getCurrentSchema() {
-        return currentSchema;
+    public String getSourceSchema() {
+        return sourceSchema;
     }
 
     /**
-     * 現行スキーマ名を設定する。
+     * 移行元スキーマ名を設定する。
      *
-     * @param currentSchema 現行スキーマ名
+     * @param sourceSchema 移行元スキーマ名
      */
-    public void setCurrentSchema(String currentSchema) {
-        this.currentSchema = currentSchema;
+    public void setSourceSchema(String sourceSchema) {
+        this.sourceSchema = sourceSchema;
     }
 
     /**
-     * 次期スキーマ名を取得する。
+     * 移行先スキーマ名を取得する。
      *
-     * @return 次期スキーマ名
+     * @return 移行先スキーマ名
      */
-    public String getNextSchema() {
-        return nextSchema;
+    public String getTargetSchema() {
+        return targetSchema;
     }
 
     /**
-     * 次期スキーマ名を設定する。
+     * 移行先スキーマ名を設定する。
      *
-     * @param nextSchema 次期スキーマ名
+     * @param targetSchema 移行先スキーマ名
      */
-    public void setNextSchema(String nextSchema) {
-        this.nextSchema = nextSchema;
+    public void setTargetSchema(String targetSchema) {
+        this.targetSchema = targetSchema;
     }
 
     /**

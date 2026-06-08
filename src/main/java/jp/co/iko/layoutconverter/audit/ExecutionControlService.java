@@ -102,6 +102,6 @@ public class ExecutionControlService {
     }
 
     private String executionControlTable() {
-        return SchemaNames.qualify(properties.getNextSchema(), EXECUTION_CONTROL_TABLE);
+        return SchemaNames.qualify(properties.getTargetSchema(), EXECUTION_CONTROL_TABLE);
     }
 }

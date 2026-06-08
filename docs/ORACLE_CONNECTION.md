@@ -22,20 +22,20 @@ gradle bootRun --args='--spring.profiles.active=local --tasks=SAMPLE_CUSTOMER'
 | 項目 | 値 |
 | --- | --- |
 | URL | `jdbc:oracle:thin:@localhost:1521/FREEPDB1` |
-| User | `CURRENT_SCHEMA` |
+| User | `SOURCE_SCHEMA` |
 | Password | `password` |
-| Current schema | `CURRENT_SCHEMA` |
-| Next schema | `NEXT_SCHEMA` |
+| Source schema | `SOURCE_SCHEMA` |
+| Target schema | `TARGET_SCHEMA` |
 | Task | `SAMPLE_CUSTOMER` |
 
 必要に応じて環境変数で上書きする。
 
 ```bash
 export IKO_DB_URL='jdbc:oracle:thin:@localhost:1521/FREEPDB1'
-export IKO_DB_USER='CURRENT_SCHEMA'
+export IKO_DB_USER='SOURCE_SCHEMA'
 export IKO_DB_PASSWORD='password'
-export IKO_CURRENT_SCHEMA='CURRENT_SCHEMA'
-export IKO_NEXT_SCHEMA='NEXT_SCHEMA'
+export IKO_SOURCE_SCHEMA='SOURCE_SCHEMA'
+export IKO_TARGET_SCHEMA='TARGET_SCHEMA'
 export IKO_TASKS='SAMPLE_CUSTOMER'
 ```
 
@@ -47,8 +47,8 @@ export IKO_TASKS='SAMPLE_CUSTOMER'
 export IKO_DB_URL='jdbc:oracle:thin:@db-host:1521/SERVICE_NAME'
 export IKO_DB_USER='MIGRATION_USER'
 export IKO_DB_PASSWORD='password'
-export IKO_CURRENT_SCHEMA='CURRENT_SCHEMA'
-export IKO_NEXT_SCHEMA='NEXT_SCHEMA'
+export IKO_SOURCE_SCHEMA='SOURCE_SCHEMA'
+export IKO_TARGET_SCHEMA='TARGET_SCHEMA'
 export IKO_TASKS='SAMPLE_CUSTOMER'
 
 gradle bootRun --args='--spring.profiles.active=oracle'
@@ -61,8 +61,8 @@ gradle bootRun --args='--spring.profiles.active=oracle'
 | `IKO_DB_URL` | Oracle JDBC URL |
 | `IKO_DB_USER` | DB ユーザー |
 | `IKO_DB_PASSWORD` | DB パスワード |
-| `IKO_CURRENT_SCHEMA` | 現行スキーマ名 |
-| `IKO_NEXT_SCHEMA` | 次期スキーマ名 |
+| `IKO_SOURCE_SCHEMA` | 移行元スキーマ名 |
+| `IKO_TARGET_SCHEMA` | 移行先スキーマ名 |
 
 ## 任意環境変数
 
@@ -78,7 +78,7 @@ gradle bootRun --args='--spring.profiles.active=oracle'
 
 ## 事前 DDL
 
-実行制御テーブルは次期スキーマに作成する。
+実行制御テーブルは移行先スキーマに作成する。
 
 ```bash
 src/main/resources/db/oracle/execution_control.sql
