@@ -62,7 +62,7 @@ public class SampleCustomerMigrationTask implements MigrationTask {
         long readCount = mapper.countSource(sourceTable001);
         int convertedCount = mapper.mergeCustomers(sourceTable001, sourceTable002, targetTable);
 
-        log.info("Sample customer migration merged rows. taskId={} readCount={} convertedCount={} commitSize={}",
+        log.info("サンプル顧客移行の MERGE を実行しました。taskId={} readCount={} convertedCount={} commitSize={}",
                 taskId(), readCount, convertedCount, context.commitSize());
 
         return new MigrationTaskResult(readCount, convertedCount, 0);

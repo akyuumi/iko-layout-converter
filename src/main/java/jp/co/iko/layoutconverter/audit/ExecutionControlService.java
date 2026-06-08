@@ -47,14 +47,14 @@ public class ExecutionControlService {
         if (!decision.executable()) {
             mapper.insertRunning(executionControlTable(), runId, taskId);
             mapper.updateStatus(executionControlTable(), runId, taskId, ExecutionStatus.SKIPPED);
-            log.info("Task skipped by execution control. runId={} taskId={} previousStatus={} reason={}",
+            log.info("実行制御によりタスクをスキップしました。runId={} taskId={} previousStatus={} reason={}",
                     runId, taskId, decision.previousStatus(), decision.reason());
             return decision;
         }
 
         mapper.insertRunning(executionControlTable(), runId, taskId);
         if (decision.previousStatus() == ExecutionStatus.RUNNING) {
-            log.warn("Previous execution may have been interrupted. runId={} taskId={} reason={}",
+            log.warn("前回実行が中断された可能性があります。runId={} taskId={} reason={}",
                     runId, taskId, decision.reason());
         }
         return decision;
@@ -82,21 +82,21 @@ public class ExecutionControlService {
 
     private ExecutionDecision decide(ExecutionControlRecord latest) {
         if (latest == null) {
-            return ExecutionDecision.execute(null, "no previous execution");
+            return ExecutionDecision.execute(null, "前回実行なし");
         }
         if (latest.status() == ExecutionStatus.SUCCESS) {
-            return ExecutionDecision.skip(latest.status(), "already completed");
+            return ExecutionDecision.skip(latest.status(), "前回実行が正常終了済み");
         }
         if (latest.status() == ExecutionStatus.RUNNING) {
-            return ExecutionDecision.execute(latest.status(), "previous execution was not closed");
+            return ExecutionDecision.execute(latest.status(), "前回実行が未完了");
         }
-        return ExecutionDecision.execute(latest.status(), "previous execution is retryable");
+        return ExecutionDecision.execute(latest.status(), "前回実行は再実行対象");
     }
 
     private void updateStatus(String runId, String taskId, ExecutionStatus status) {
         int updated = mapper.updateStatus(executionControlTable(), runId, taskId, status);
         if (updated != 1) {
-            throw new IllegalStateException("Failed to update execution control. runId="
+            throw new IllegalStateException("実行制御の更新に失敗しました。runId="
                     + runId + " taskId=" + taskId + " status=" + status);
         }
     }

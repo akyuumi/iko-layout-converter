@@ -24,7 +24,7 @@ public class MigrationTaskRegistry {
         for (MigrationTask task : tasks) {
             MigrationTask duplicated = this.tasks.putIfAbsent(task.taskId(), task);
             if (duplicated != null) {
-                throw new IllegalStateException("Duplicated migration task id: " + task.taskId());
+                throw new IllegalStateException("移行タスク ID が重複しています: " + task.taskId());
             }
         }
     }

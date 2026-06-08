@@ -59,7 +59,7 @@ public class MigrationRunner implements CommandLineRunner {
         List<String> requestedTaskIds = resolveTaskIds(args);
         List<MigrationTask> tasks = resolveTasks(requestedTaskIds);
         if (tasks.isEmpty()) {
-            log.warn("No migration task found. requestedTaskIds={}", requestedTaskIds);
+            log.warn("実行対象の移行タスクが見つかりません。requestedTaskIds={}", requestedTaskIds);
             return;
         }
 
@@ -71,14 +71,14 @@ public class MigrationRunner implements CommandLineRunner {
                 properties.getCommitSize()
         );
 
-        log.info("Migration started. runId={} taskCount={} commitSize={}",
+        log.info("移行処理を開始しました。runId={} taskCount={} commitSize={}",
                 runId, tasks.size(), properties.getCommitSize());
 
         for (MigrationTask task : tasks) {
             executeTask(task, context);
         }
 
-        log.info("Migration finished. runId={}", runId);
+        log.info("移行処理を終了しました。runId={}", runId);
     }
 
     private List<String> resolveTaskIds(String[] args) {
@@ -107,7 +107,7 @@ public class MigrationRunner implements CommandLineRunner {
         List<MigrationTask> tasks = new ArrayList<>();
         for (String taskId : requestedTaskIds) {
             MigrationTask task = taskRegistry.findByTaskId(taskId)
-                    .orElseThrow(() -> new IllegalArgumentException("Unknown migration task id: " + taskId));
+                    .orElseThrow(() -> new IllegalArgumentException("未登録の移行タスク ID です: " + taskId));
             tasks.add(task);
         }
         return tasks;
@@ -120,12 +120,12 @@ public class MigrationRunner implements CommandLineRunner {
             return;
         }
 
-        log.info("Task started. runId={} taskId={}", context.runId(), task.taskId());
+        log.info("タスクを開始しました。runId={} taskId={}", context.runId(), task.taskId());
         try {
             MigrationTaskResult result = task.execute(context);
             executionControlService.markSuccess(context.runId(), task.taskId());
             Duration elapsed = Duration.between(startedAt, Instant.now());
-            log.info("Task finished. runId={} taskId={} readCount={} convertedCount={} errorCount={} elapsedMillis={}",
+            log.info("タスクを終了しました。runId={} taskId={} readCount={} convertedCount={} errorCount={} elapsedMillis={}",
                     context.runId(),
                     task.taskId(),
                     result.readCount(),
@@ -135,7 +135,7 @@ public class MigrationRunner implements CommandLineRunner {
         } catch (RuntimeException e) {
             executionControlService.markError(context.runId(), task.taskId());
             Duration elapsed = Duration.between(startedAt, Instant.now());
-            log.error("Task failed. runId={} taskId={} elapsedMillis={}",
+            log.error("タスクが失敗しました。runId={} taskId={} elapsedMillis={}",
                     context.runId(), task.taskId(), elapsed.toMillis(), e);
             throw e;
         }
